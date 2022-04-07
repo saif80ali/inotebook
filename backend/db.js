@@ -3,7 +3,7 @@ const URI = "mongodb://localhost:27017/inotebook"
 
 const connectToMogo = ()=>{
     mongoose.connect(URI,()=>{
-        console.log("MongoDB Connection Successful! yaaay")
+        console.log("MongoDB Connection Successful!")
     })
 }
 

@@ -4,7 +4,7 @@ const Notes = require('../models/Notes')
 var fetchuser = require('../middleware/fethuser')
 const { body, validationResult } = require('express-validator');
 
-//Route 1: Fetch all user with user id using GET -login required 
+//Route 1: Fetch all Notes with user id using GET -login required 
 router.get('/fetchallnotes',fetchuser,async(req,res)=>{
     try {
         const notes = await Notes.find({user:req.user.id})
@@ -26,10 +26,49 @@ router.post('/addnote',fetchuser,[
       return res.status(400).json({ errors: errors.array() });
     }
     try {
+        //destructuring
         const {title,tag,description} = req.body
+        //Creating new note using ES6
         const note = await new Notes({title,tag,description,user:req.user.id})
         const savednote = await note.save()
         res.json(savednote)
+    } catch (error) {
+        console.error(error)
+        res.status(400).send("Some Erorr Occurred!")
+    }
+})
+
+//Route 3: Update a note with note ID using PUT -login required 
+router.put('/updatenote/:id',fetchuser,async(req,res)=>{    
+    try {
+        const {title,tags,description} = req.body;
+        const newNote = {}
+        if(title){newNote.title = title}
+        if(tags){newNote.tags = tags}
+        if(description){newNote.description = description}
+
+        let note = await Notes.findOne({"id":req.params.id})
+        if(!note){return res.status(404).send("Note not found")}
+
+        //Check is user id of note and loggedin user is same
+        if(note.user != req.user.id){return res.status(401).send("Access denied")}
+        note = await Notes.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true})
+        res.json(note)
+    } catch (error) {
+        console.error(error)
+        res.status(400).send("Some Erorr Occurred!")
+    }
+})
+
+//Route 4: Delete a note with note ID using DELETE -login required 
+router.delete('/deletenote/:id',fetchuser,async(req,res)=>{    
+    try {
+        let note = await Notes.findOne({"id":req.params.id})
+        if(!note){return res.status(404).send("Note not found")}
+        //Check is user id of note and loggedin user is same
+        if(note.user != req.user.id){return res.status(401).send("Access denied")}
+        note = await Notes.findByIdAndDelete(req.params.id)
+        res.json({"success":"Deleted","note":note})
     } catch (error) {
         console.error(error)
         res.status(400).send("Some Erorr Occurred!")
