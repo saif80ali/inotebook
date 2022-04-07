@@ -27,9 +27,9 @@ router.post('/addnote',fetchuser,[
     }
     try {
         //destructuring
-        const {title,tag,description} = req.body
+        const {title,tags,description} = req.body
         //Creating new note using ES6
-        const note = await new Notes({title,tag,description,user:req.user.id})
+        const note = await new Notes({title,tags,description,user:req.user.id})
         const savednote = await note.save()
         res.json(savednote)
     } catch (error) {
@@ -63,7 +63,7 @@ router.put('/updatenote/:id',fetchuser,async(req,res)=>{
 //Route 4: Delete a note with note ID using DELETE -login required 
 router.delete('/deletenote/:id',fetchuser,async(req,res)=>{    
     try {
-        let note = await Notes.findOne({"id":req.params.id})
+        let note = await Notes.findById(req.params.id)
         if(!note){return res.status(404).send("Note not found")}
         //Check is user id of note and loggedin user is same
         if(note.user != req.user.id){return res.status(401).send("Access denied")}
