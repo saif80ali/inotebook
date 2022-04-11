@@ -80,12 +80,25 @@ router.post('/login',[
     }
 })
 
-//ROUTE 3 :- fetching user details /api/auth/getuser
+//ROUTE 3 :- fetching a particular user details /api/auth/getuser
 router.post('/getuser',fetchuser,async (req,res)=>{
     try {
         //fisrt fetchuser() function will run the reeq.user will have the value
         let userId = req.user.id
         const userDetails = await User.findById(userId).select('-password')
+        res.send(userDetails)
+        
+    } catch(error){
+        console.error(error)
+        res.status(400).send("Some Erorr Occurred!")
+    }
+})
+
+//ROUTE 4 :- fetching all user details /api/auth/getuser
+router.get('/fetchalluser', async (req,res)=>{
+    try {
+        //fisrt fetchuser() function will run the reeq.user will have the value
+        const userDetails = await User.find().select('-password')
         res.send(userDetails)
         
     } catch(error){

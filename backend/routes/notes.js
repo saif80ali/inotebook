@@ -27,9 +27,9 @@ router.post('/addnote',fetchuser,[
     }
     try {
         //destructuring
-        const {title,tags,description} = req.body
+        const {title,tag,description} = req.body
         //Creating new note using ES6
-        const note = await new Notes({title,tags,description,user:req.user.id})
+        const note = await new Notes({title,tag,description,user:req.user.id})
         const savednote = await note.save()
         res.json(savednote)
     } catch (error) {
@@ -41,10 +41,10 @@ router.post('/addnote',fetchuser,[
 //Route 3: Update a note with note ID using PUT -login required 
 router.put('/updatenote/:id',fetchuser,async(req,res)=>{    
     try {
-        const {title,tags,description} = req.body;
+        const {title,tag,description} = req.body;
         const newNote = {}
         if(title){newNote.title = title}
-        if(tags){newNote.tags = tags}
+        if(tag){newNote.tag = tag}
         if(description){newNote.description = description}
 
         let note = await Notes.findOne({"id":req.params.id})
