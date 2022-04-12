@@ -7,16 +7,19 @@ const Addnote = () => {
 
   const handleAddnote = (e) => {
     e.preventDefault();
-    let title = document.getElementById("title").value;
-    let description = document.getElementById("description").value;
-    let tag = document.getElementById("tag").value;
+    let title = document.getElementById("title");
+    let description = document.getElementById("description");
+    let tag = document.getElementById("tag");
+    
     const newNote = {
-      _id: "hegdhsegdhgv",
-      title: title,
-      description: description,
-      tag: tag,
-    };
+      title:title.value,
+      description:description.value,
+      tag:tag.value
+      };
     addNote(newNote);
+    title.value = ""
+    description.value = ""
+    tag.value = "General"
   };
   return (
     <div className="container my-3">

@@ -1,5 +1,16 @@
 import React from 'react'
+// import { useNavigate } from "react-router-dom";
 const About = () => {
+  // let history = useNavigate()
+  // useEffect(() => {
+  //   if(localStorage.getItem('token')){
+  //     console.log()
+  //   }
+  //   else{
+  //     history("/login")
+  //   }
+    // eslint-disable-next-line
+  // }, []);
     
   return (
     <div>

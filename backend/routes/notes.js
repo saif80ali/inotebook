@@ -6,8 +6,10 @@ const { body, validationResult } = require('express-validator');
 
 //Route 1: Fetch all Notes with user id using GET -login required 
 router.get('/fetchallnotes',fetchuser,async(req,res)=>{
+
     try {
         const notes = await Notes.find({user:req.user.id})
+        success = true
         res.json(notes)
     } catch (error) {
         console.error(error)
@@ -43,20 +45,21 @@ router.put('/updatenote/:id',fetchuser,async(req,res)=>{
     try {
         const {title,tag,description} = req.body;
         const newNote = {}
+        let success = false
         if(title){newNote.title = title}
         if(tag){newNote.tag = tag}
         if(description){newNote.description = description}
-
-        let note = await Notes.findOne({"id":req.params.id})
-        if(!note){return res.status(404).send("Note not found")}
-
+        let note = await Notes.findOne({"_id":req.params.id})
+        if(!note){return res.status(404).send({success,msg:"Note not found"})}
+        
         //Check is user id of note and loggedin user is same
-        if(note.user != req.user.id){return res.status(401).send("Access denied")}
+        if(note.user != req.user.id){return res.status(401).send({success,msg:"Access denied"})}
         note = await Notes.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true})
-        res.json(note)
+        success = true
+        res.json({success,note})
     } catch (error) {
         console.error(error)
-        res.status(400).send("Some Erorr Occurred!")
+        res.status(400).send({success,msg:"Some Erorr Occurred!"})
     }
 })
 

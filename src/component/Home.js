@@ -9,7 +9,9 @@ const Home = () => {
   const alertmsg = context.alertmsg
   return (
     <>
+    <div style={{"minHeight":"58px"}}>
     {alertmsg && <Alert alertmsg={alertmsg}/>}
+    </div>
     <Addnote/>
     <Notes/>
     </>

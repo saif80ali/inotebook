@@ -16,15 +16,16 @@ router.post('/createuser',[
     body('password',"Enter valid password").isLength({min:5})
 ],async (req,res)=>{
     // check if any error are there
+    let success = false
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({success, errors: errors.array() });
     }
     try{
     let user = await User.findOne({email:req.body.email})
-    // console.log("I m printing",user)
+
     if(user){
-        return res.status(400).json({ errors:"User with this email already exists" });
+        return res.status(400).json({success,errors:"User with this email already exists" });
     }
     var salt = bcrypt.genSaltSync(10);
     var secPassword = await bcrypt.hash(req.body.password, salt);
@@ -39,7 +40,7 @@ router.post('/createuser',[
         }
     } 
     const signedToken = jwt.sign(data,JWT_SECRET)
-    res.json(signedToken)
+    res.json({success,signedToken})
    
     }catch(error){
         console.error(error)
@@ -58,22 +59,25 @@ router.post('/login',[
     }
     try{
         //destructuring from req.body
+        let success = false
         const {email,password} = req.body
         let user = await User.findOne({email})
         if(!user){
-            res.json({error:"Please check your credentials"})
+            res.json({success,error:"Please check your credentials"})
         }
         let passComp = bcrypt.compareSync(password, user.password);
         if(!passComp){
-            res.json({error:"Please check your credentials"})
+            res.json({success,error:"Please check your credentials"})
         }
+
         const data={
             user:{
                 id:user.id
             }
         } 
         const signedToken = jwt.sign(data,JWT_SECRET)
-        res.json(signedToken)
+        success = true
+        res.json({success,signedToken})
     }catch(error){
         console.error(error)
         res.status(400).send("Some Erorr Occurred!")

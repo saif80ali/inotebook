@@ -2,8 +2,8 @@ import React from "react";
 
 const Alert = (props) => {
   return (
-    <div class="alert alert-success" role="alert">
-      {props.alertmsg}
+    <div className={`alert alert-${props.alertmsg.type}`} role="alert">
+      {props.alertmsg.msg}
     </div>
   );
 };
