@@ -108,16 +108,44 @@ const NoteState = (props)=>{
       const status = await response.json()
       const {success,error,signedToken} = status
       // console.log(success)
-      localStorage.setItem('token',signedToken)
+      
       if(success){
         Myalert("success","Log in Successfull!")
+        localStorage.setItem('token',signedToken)
         return success
       }
       else{
         Myalert("danger",error)
         return success
       }
-}
+  }
+
+  const handleSignup = async(userdetails)=>{
+    // const appendNote = note.concat(newNote)
+    // setNote(appendNote)
+    const response = await fetch(`${url}/api/auth/createuser`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token':localStorage.getItem('token')
+        },
+        body: JSON.stringify(userdetails)
+      });
+      const status = await response.json()
+      const {success,error,signedToken} = status
+      // console.log(success)
+      
+      if(success){
+
+        Myalert("success","Log in Successfull!")
+        localStorage.setItem('token',signedToken)
+        return success
+      }
+      else{
+        Myalert("danger",error)
+        return success
+      }
+  }
 
     //Creating alert with taking the type of alert
     const Myalert = (type,msg)=>{
@@ -130,7 +158,7 @@ const NoteState = (props)=>{
 
 
     return(
-        <NoteContext.Provider value={{note,alertmsg,addNote,deleteNote,fetchallnote,updateNote,handleLogin}}>
+        <NoteContext.Provider value={{note,alertmsg,addNote,deleteNote,fetchallnote,updateNote,handleLogin,handleSignup}}>
             {props.children}
         </NoteContext.Provider>
     )

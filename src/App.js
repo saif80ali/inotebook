@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./component/About";
 import NoteState from "./context/notes/noteState";
 import Login from "./component/Login";
+import Signup from "./component/Signup";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/signup" element={<Signup/>} />
         </Routes>
       </Router>
       </NoteState>

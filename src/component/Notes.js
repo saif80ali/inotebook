@@ -11,8 +11,13 @@ const Notes = () => {
   const fetchallnote = note.fetchallnote;
 
   useEffect(() => {
-    if(localStorage.getItem('token')){
-      fetchallnote();
+    if(localStorage.getItem('token')) {
+      if(localStorage.getItem('token') === "undefined"){
+        localStorage.removeItem('token')
+      }
+      else{
+        fetchallnote();
+      }
     }
     else{
       history("/login")
