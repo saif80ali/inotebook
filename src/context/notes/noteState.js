@@ -17,7 +17,7 @@ const NoteState = (props)=>{
             },
           });
           const json = await response.json()
-          if(json === [] ){
+          if(json == [] ){
               setNote("No notes to show")
           }
           else{

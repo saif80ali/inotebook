@@ -2,9 +2,17 @@ import React,{useContext} from "react";
 import noteContext from '../context/notes/noteContext'
 
 const NoteItem = (props) => {
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true // Use 24-hour format
+    };
     const note = useContext(noteContext)
     const deleteNote = note.deleteNote
-    let {id,title,description,tag,editNote} = props
+    let {id,title,description,tag,date,editNote} = props
     const handleDelete=(id)=>{
         deleteNote(id)
     }
@@ -20,6 +28,7 @@ const NoteItem = (props) => {
               
               <p className="card-text"><small className="text-muted">{tag}</small></p>
               <p className="card-text">{description}</p>
+              <div className="text-muted fw-bold text-end">{new Date(date).toLocaleString('en-US', options)}</div>
                      
             </div>
             

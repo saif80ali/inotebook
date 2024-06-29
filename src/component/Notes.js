@@ -113,6 +113,7 @@ const Notes = () => {
                 title={element.title}
                 description={element.description}
                 tag={element.tag}
+                date={element.date}
                 editNote={editNote}
               />
             );
