@@ -26,7 +26,6 @@ router.post('/createuser',[
 
     if(user){
         return res.status(400).json({success,error:"User with this email already exists" });
-        return res.status(400).json({success,error:"User with this email already exists" });
     }
     var salt = bcrypt.genSaltSync(10);
     var secPassword = await bcrypt.hash(req.body.password, salt);
