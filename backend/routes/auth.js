@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 var fetchuser = require('../middleware/fethuser')
 
 //key for signing the token
-const JWT_SECRET = "Saifisagoodb%oy"
+const JWT_SECRET = process.env.JWT_SECRET
 
 //ROUTE 1:- Creating a user /api/auth/createuser
 router.post('/createuser',[

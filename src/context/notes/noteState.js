@@ -7,7 +7,7 @@ const NoteState = (props)=>{
     const [note,setNote] = useState([])
     const [alertmsg,setAlertMsg] = useState(null)
 
-    const url = "http://localhost:5000"
+    const url = process.env.REACT_APP_API_URL_BACKEND;
     const fetchallnote = async ()=>{
         const response = await fetch(`${url}/api/notes/fetchallnotes`, {
             method: 'GET',
@@ -17,7 +17,7 @@ const NoteState = (props)=>{
             },
           });
           const json = await response.json()
-          if(json == [] ){
+          if(!json.length){
               setNote("No notes to show")
           }
           else{
