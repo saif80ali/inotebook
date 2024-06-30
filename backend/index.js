@@ -5,7 +5,7 @@ require('dotenv').config();
 
 connectToMogo()
 const app = express()
-const port = 5000
+const port =  process.env.PORT;
 const frontend_url = process.env.FRONTEND_URL;
 app.use(cors({
   origin: frontend_url, // Allow requests from this origin
