@@ -19,6 +19,18 @@ const Login = () => {
 
         // console.log(res)
     }
+
+    const textAPI = async () => {
+      const url = process.env.REACT_APP_API_URL_BACKEND;
+        await fetch(`${url}/api/hello`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+        //   console.log(json)
+    }
   return (
       <>
       {alertmsg && <Alert alertmsg={alertmsg}/>}
@@ -37,6 +49,7 @@ const Login = () => {
   </div>
   <button type="submit" className="btn btn-primary">Submit</button>
 </form>
+  <button onClick={textAPI} className="btn btn-primary mt-2">Test</button>
     </div>
     </>
   )
