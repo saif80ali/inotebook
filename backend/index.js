@@ -3,13 +3,9 @@ const express = require('express')
 var cors = require('cors')
 require('dotenv').config();
 
-const User = require('./models/User');
-
 connectToMogo()
 const app = express()
 const port =  process.env.PORT || "5000";
-const JWT_SECRET = process.env.JWT_SECRET;
-const URI = process.env.MONGODB_URI
 const frontendurl = process.env.FRONTEND_URL || "http://localhost:3000";
 app.use(cors({
   origin : frontendurl,
@@ -20,16 +16,6 @@ app.use(express.urlencoded({ extended: true }));;
 
 app.use('/api/auth',require('./routes/auth'))
 app.use('/api/notes',require('./routes/notes'))
-app.get('/api/hello', async (req, res) => {
-  let data = await User.find();
-  res.json({ message: 'Hello from Express!',
-    port: port,
-    key: JWT_SECRET,
-    frontendurl: process.env.FRONTEND_URL,
-    uri:URI,
-    data:data
-   });
-});
 
 app.listen(port, () => {
   console.log(`iNotebook backend listening on port ${port}`)
