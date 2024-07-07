@@ -10,7 +10,8 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const URI = process.env.MONGODB_URI
 const frontendurl = process.env.FRONTEND_URL || "http://localhost:3000";
 app.use(cors({
-  origin : [frontendurl],
+  origin : frontendurl,
+  optionsSuccessStatus: 200
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));;
@@ -21,7 +22,8 @@ app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from Express!',
     port: port,
     key: JWT_SECRET,
-    uri:URI
+    frontendurl: process.env.FRONTEND_URL,
+    uri:URI,
    });
 });
 
