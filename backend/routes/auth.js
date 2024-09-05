@@ -52,25 +52,27 @@ router.post('/createuser',[
 router.post('/login',[
     body('email',"Enter valid email").isEmail(),    
     body('password',"Password cannot be blank").exists()],async (req,res)=>{
-
-    const errors = validationResult(req);
-    // check if any error are there
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    try{
+    
+        try{
+        const errors = validationResult(req);
+        // check if any error are there
+        if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+        }
+    
         //destructuring from req.body
         let success = false
         const {email,password} = req.body
         let user = await User.findOne({email})
         if(!user){
-            res.json({success,error:"Please check your credentials"})
+            return res.json({success,error:"Please check your credentials"})
+        } else {
+            let passComp = bcrypt.compareSync(password, user.password);
+            if(!passComp){
+               return res.json({success,error:"Please check your credentials"})
+            }
         }
-        let passComp = bcrypt.compareSync(password, user.password);
-        if(!passComp){
-            res.json({success,error:"Please check your credentials"})
-        }
-
+        
         const data={
             user:{
                 id:user.id

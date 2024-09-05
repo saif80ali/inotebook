@@ -31,7 +31,7 @@ router.post('/addnote',fetchuser,[
         //destructuring
         const {title,tag,description} = req.body
         //Creating new note using ES6
-        const note = await new Notes({title,tag,description,user:req.user.id})
+        const note = new Notes({title,tag,description,user:req.user.id})
         const savednote = await note.save()
         res.json(savednote)
     } catch (error) {
