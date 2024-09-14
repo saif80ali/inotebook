@@ -4,7 +4,7 @@ const Stock = require('../models/Stock')
 var fetchuser = require('../middleware/fethuser')
 const { body, validationResult } = require('express-validator');
 
-router.get("/fetchStocks", fetchuser, async (req, res) => {
+router.get("/", fetchuser, async (req, res) => {
     try {
         const stock = await Stock.find({user: req.user.id});
         res.status(200).send(stock);
@@ -31,6 +31,16 @@ router.post("/addTransaction", fetchuser,[
             await newRecord.save();
             res.status(200).json(newRecord);
         }
+    } catch (err) {
+        res.status(400).send(err);
+    }
+})
+
+router.delete("/:id", fetchuser, async (req, res) => {
+    try {
+        const id = req.params.id;
+        await Stock.findByIdAndDelete(id);
+        res.status(200).send({message: "Record deleted successfully"});
     } catch (err) {
         res.status(400).send(err);
     }
