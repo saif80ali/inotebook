@@ -88,12 +88,12 @@ router.post('/login',[
 })
 
 //ROUTE 3 :- fetching a particular user details /api/auth/getuser
-router.post('/getuser',fetchuser,async (req,res)=>{
+router.get('/getuser',fetchuser, async (req,res)=>{
     try {
-        //fisrt fetchuser() function will run the reeq.user will have the value
+        //fisrt fetchuser() function will run the req.user will have the value
         let userId = req.user.id
-        const userDetails = await User.findById(userId).select('-password')
-        res.send(userDetails)
+        const userDetails = await User.findById(userId).select(['-password', '-_id'])
+        res.status(200).send(userDetails);
         
     } catch(error){
         console.error(error)
