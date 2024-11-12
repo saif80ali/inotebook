@@ -13,7 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET
 router.post('/createuser',[
     body('name',"Enter valid name").isLength({min:3}),
     body('email',"Enter valid email").isEmail(),
-    body('password',"Enter valid password").isLength({min:5})
+    body('password',"Enter valid password").isLength({min:8})
 ],async (req,res)=>{
     // check if any error are there
     let success = false
