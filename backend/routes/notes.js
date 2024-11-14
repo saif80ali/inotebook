@@ -33,7 +33,8 @@ router.post('/addnote',fetchuser,[
         //Creating new note using ES6
         const note = new Notes({title,tag,description,user:req.user.id})
         const savednote = await note.save()
-        res.json(savednote)
+        message = "Note addedd successfully"
+        res.status(200).json({savednote,message})
     } catch (error) {
         console.error(error)
         res.status(400).send("Some Erorr Occurred!")
@@ -54,9 +55,10 @@ router.put('/updatenote/:id',fetchuser,async(req,res)=>{
         
         //Check is user id of note and loggedin user is same
         if(note.user != req.user.id){return res.status(401).send({success,msg:"Access denied"})}
-        note = await Notes.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true})
-        success = true
-        res.json({success,note})
+        note = await Notes.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true}).select("-user")
+        success = true;
+        message = "Note updated successfully";
+        res.json({success,note,message})
     } catch (error) {
         console.error(error)
         res.status(400).send({success,msg:"Some Erorr Occurred!"})
@@ -71,7 +73,8 @@ router.delete('/deletenote/:id',fetchuser,async(req,res)=>{
         //Check is user id of note and loggedin user is same
         if(note.user != req.user.id){return res.status(401).send("Access denied")}
         note = await Notes.findByIdAndDelete(req.params.id)
-        res.json({"success":"Deleted","note":note})
+        message = "Note deleted successfully";
+        res.json({"success": true,"note":note, "message": message});
     } catch (error) {
         console.error(error)
         res.status(400).send("Some Erorr Occurred!")

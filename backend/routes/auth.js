@@ -57,7 +57,7 @@ router.post('/login',[
         const errors = validationResult(req);
         // check if any error are there
         if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ error: errors.array() });
         }
     
         //destructuring from req.body

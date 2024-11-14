@@ -29,7 +29,8 @@ router.post("/addTransaction", fetchuser,[
             let {stock_name, transaction_type, price, quantity, amount, transaction_date} = req.body;
             const newRecord = new Stock({user: req.user.id,stock_name, transaction_type, price, quantity, amount, transaction_date});
             await newRecord.save();
-            res.status(200).json(newRecord);
+            message = "Record added successfully"
+            res.status(200).json({newRecord, message});
         }
     } catch (err) {
         res.status(400).send(err);
