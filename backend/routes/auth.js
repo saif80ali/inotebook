@@ -27,12 +27,11 @@ router.post('/createuser',[
     if(user){
         return res.status(400).json({success,error:"User with this email already exists" });
     }
-    var salt = bcrypt.genSaltSync(10);
-    var secPassword = await bcrypt.hash(req.body.password, salt);
+    
     user = await User.create({
         name:req.body.name,
         email: req.body.email,
-        password: secPassword,
+        password: await getHashedPassowrd(req.body.password),
     })
     const data={
         user:{
@@ -51,7 +50,7 @@ router.post('/createuser',[
 //ROUTE 2:- Log in with a user credentials /api/auth/login
 router.post('/login',[
     body('email',"Enter valid email").isEmail(),    
-    body('password',"Password cannot be blank").exists()],async (req,res)=>{
+    body('password',"Password cannot be blank").exists()], async (req,res)=>{
     
         try{
         const errors = validationResult(req);
@@ -88,7 +87,7 @@ router.post('/login',[
 })
 
 //ROUTE 3 :- fetching a particular user details /api/auth/getuser
-router.get('/getuser',fetchuser, async (req,res)=>{
+router.get('/getuser', fetchuser, async (req,res)=>{
     try {
         //fisrt fetchuser() function will run the req.user will have the value
         let userId = req.user.id
@@ -113,4 +112,28 @@ router.get('/fetchalluser', async (req,res)=>{
         res.status(400).send("Some Erorr Occurred!")
     }
 })
+
+//ROUTE 5 :- Update your password
+router.post('/changepassword', fetchuser, [body('password',"Password cannot be blank").exists()], async (req, res)=>{
+    try {
+        //fisrt fetchuser() function will run the req.user will have the value
+        let userId = req.user.id
+        let newPassword = await getHashedPassowrd(req.body.password);
+        await User.findByIdAndUpdate(userId,{$set : {
+            password: newPassword
+        }})
+        return res.status(201).json({success: true, message:"Passwword updated"});
+        
+    } catch(error){
+        console.error(error)
+        res.status(400).send("Some Erorr Occurred!")
+    }
+})
+
+async function getHashedPassowrd(password) {
+    var salt = bcrypt.genSaltSync(10);
+    var secPassword = await bcrypt.hash(password, salt);
+    return secPassword;
+}
+
 module.exports = router
