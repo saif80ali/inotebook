@@ -50,6 +50,7 @@ router.put('/updatenote/:id',fetchuser,async(req,res)=>{
         if(title){newNote.title = title}
         if(tag){newNote.tag = tag}
         if(description){newNote.description = description}
+        newNote.date = Date.now();
         let note = await Notes.findOne({"_id":req.params.id})
         if(!note){return res.status(404).send({success,msg:"Note not found"})}
         
