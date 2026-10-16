@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
-const URI = process.env.MONGODB_URI || "mongodb://localhost:27017";
-const connectToMogo = ()=>{
-    mongoose.connect(URI,{
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-        },()=>{
-        console.log("MongoDB Connection Successful!")
-    })
-}
+const URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 
-module.exports = connectToMogo
+const connectToMongo = async () => {
+    try {
+        await mongoose.connect(URI);
+        console.log(`MongoDB connected successfully to ${mongoose.connection.host}`);
+    } catch (error) {
+        console.error('MongoDB connection failed:', error.message);
+        throw error;
+    }
+};
+
+module.exports = connectToMongo;
